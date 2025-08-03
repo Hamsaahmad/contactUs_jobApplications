@@ -6,6 +6,7 @@ const{connectDB} = require("./DB.ts")
 const app = express()
 const port = process.env.Port
 const Message = require("./models/message")
+const validatorMiddleWare = require("./middlewares/verificationMiddleWare")
 import validator from 'validator';
 interface SendMessageBody {
   companyInput: string;
@@ -23,6 +24,7 @@ app.listen(port,() => {
 
 app.use(express.json())
 app.use(cookieParser())
+app.use(validatorMiddleWare())
 
 app.post('/sendMessage',async (req : Request<{},{},SendMessageBody>, res: Response) => {
     try{

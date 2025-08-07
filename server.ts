@@ -7,6 +7,13 @@ const app = express()
 const port = process.env.Port
 const Message = require("./models/message")
 import validator from 'validator';
+import cors from 'cors';
+
+app.use(cors({
+  origin: "http://localhost:5173", // Allow your Vite frontend
+  credentials: true // Optional if you're using cookies
+}));
+
 interface SendMessageBody {
   companyInput: string;
   emailInput: string;
@@ -24,7 +31,7 @@ app.listen(port,() => {
 app.use(express.json())
 app.use(cookieParser())
 
-app.post('/sendMessage',async (req : Request<{},{},SendMessageBody>, res: Response) => {
+app.post('/api/contact',async (req : Request<{},{},SendMessageBody>, res: Response) => {
     try{
     const {companyInput, emailInput , messageInput, nameInput , phoneInput , subjectInput} = req.body
     if(!(typeof emailInput === 'string' && validator.isEmail(emailInput))){
@@ -42,7 +49,7 @@ app.post('/sendMessage',async (req : Request<{},{},SendMessageBody>, res: Respon
         subject : subjectInput,
     })
     await message.save()
-    res.status(200).send("the message was delevired successfully")
+    res.status(200).json({ message: "the message was delivered successfully" });
 }catch(err:unknown){
       if (err instanceof Error) {
     console.error("Error:", err.message);

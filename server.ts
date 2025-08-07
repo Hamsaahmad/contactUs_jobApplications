@@ -12,8 +12,8 @@ import validator from 'validator';
 import cors from 'cors';
 
 app.use(cors({
-  origin: "http://localhost:5173", // or the URL where your frontend is running
-  //credentials: true
+  origin: "http://localhost:5173", // Allow your Vite frontend
+  credentials: true // Optional if you're using cookies
 }));
 
 interface SendMessageBody {
@@ -67,7 +67,7 @@ app.post('/api/contact',async (req : Request<{},{},SendMessageBody>, res: Respon
         subject : subjectInput,
     })
     await message.save()
-    res.status(200).json("the message was delevired successfully")
+    res.status(200).json({ message: "the message was delivered successfully" });
 }catch(err:unknown){
       if (err instanceof Error) {
     console.error("Error:", err.message);

@@ -5,7 +5,7 @@ const applicationSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    LinkedIn:{
+    linkedIn:{
         type:String,
         required:true
     },
